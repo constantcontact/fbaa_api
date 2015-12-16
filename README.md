@@ -22,9 +22,33 @@ Or install it yourself as:
 
     $ gem install fbaa-api
 
+## Configuration
+
+Configure the gem using the ```#configure``` method like so:
+
+```ruby
+  FbaaApi.configure do |c| 
+    c.base_url    = 'https://example.com' # mandatory
+    c.token       = 'yourtoken1234'       # mandatory, authentication token
+    c.api_version = 'v1'                  # optional, defaults to v1
+    c.logger      = Logger.new            * optional, defaults to STDOUT
+  end
+```
+
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+  FbaaApi.configure do |c| 
+    # c.base_url = ... etc, etc
+  end
+
+  client = FbaaApi::Client.new
+
+  client.create_ad(params)
+  client.update_ad(id, params)
+  client.get_ad(id, params)
+  client.validate_image(params)
+```
 
 ## Development
 

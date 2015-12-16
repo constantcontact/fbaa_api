@@ -6,9 +6,6 @@ module FbaaApi
     # Sets base url for FBAA
     attr_accessor :base_url
 
-    # Sets ctct environment. For production, set env to nil.
-    attr_accessor :env
-
     # Sets ctct token
     attr_accessor :token
 
