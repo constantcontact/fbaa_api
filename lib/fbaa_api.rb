@@ -1,3 +1,5 @@
+require 'logger'
+require 'json'
 require 'fbaa_api/client'
 require "fbaa_api/version"
 require "fbaa_api/configuration"
@@ -24,4 +26,5 @@ module FbaaApi
       self.configuration = Configuration.new
     end
   end
+
 end
