@@ -4,14 +4,14 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'fbaa_api/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'fbaa-api'
+  spec.name          = 'fbaa_api'
   spec.version       = FbaaApi::VERSION
   spec.authors       = ['Jarrod Spillers']
   spec.email         = ['jspillers@constantcontact.com']
 
   spec.summary       = %q{API client for facebook ads adapter}
   spec.description   = spec.summary
-  spec.homepage      = 'https://github.com/constantcontact/fbaa-api'
+  spec.homepage      = 'https://github.com/constantcontact/fbaa_api'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = 'exe'
