@@ -1,4 +1,4 @@
-[![Circle CI](https://circleci.com/gh/constantcontact/fbaa-api.svg?style=svg)](https://circleci.com/gh/constantcontact/fbaa-api)
+[![Circle CI](https://circleci.com/gh/constantcontact/fbaa_api.svg?style=svg)](https://circleci.com/gh/constantcontact/fbaa_api)
 
 # FbaaApi
 
@@ -11,7 +11,7 @@ TODO: Delete this and the text above, and describe your gem
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'fbaa-api'
+gem 'fbaa_api'
 ```
 
 And then execute:
@@ -20,7 +20,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install fbaa-api
+    $ gem install fbaa_api
 
 ## Configuration
 
@@ -58,5 +58,5 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/fbaa-api.
+Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/fbaa_api.
 
