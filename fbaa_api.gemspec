@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec-its'
   spec.add_development_dependency 'pry', '~> 0.10.1'
 
+  spec.add_dependency 'ey-hmac', '2.1.0'
   spec.add_dependency 'rspec_junit_formatter', '0.2.2'
   spec.add_dependency 'faraday', '~> 0.9.2'
   spec.add_dependency 'faraday_middleware', '~> 0.10.0'

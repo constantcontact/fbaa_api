@@ -1,5 +1,6 @@
 require 'logger'
 require 'json'
+require 'ey-hmac/faraday'
 require 'fbaa_api/client'
 require "fbaa_api/version"
 require "fbaa_api/configuration"

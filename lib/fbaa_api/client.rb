@@ -39,15 +39,14 @@ module FbaaApi
       @fbaa_url ||= "#{config.base_url}/api/#{config.api_version}"
     end
 
-    def connection(opts = {})
-      opts[:headers] ||= { 'Accept' => 'application/json' }
+    def connection
       config.logger.info("Fbaa::Client - fbaa_url #{fbaa_url}")
-      Faraday.new(url: fbaa_url) do |faraday|
-        faraday.headers = opts[:headers]
-        # this is required to be after headers to work
-        faraday.basic_auth 'roving', config.fbaa_password
-        faraday.request :url_encoded
-        faraday.adapter Faraday.default_adapter
+      Faraday.new(url: fbaa_url) do |c|
+        c.headers = { 'Accept' => 'application/json' }
+        c.use :hmac, config.access_id, config.secret_key
+        c.request :url_encoded
+        c.response :logger
+        c.adapter Faraday.default_adapter
       end
     end
 
@@ -57,6 +56,7 @@ module FbaaApi
         request.body = params if [:post, :put].include? method
         request.params = params
       end
+
       config.logger.info("Fbaa::Client - status #{response.status}")
       config.logger.info("Fbaa::Client - body #{response.body}")
 
