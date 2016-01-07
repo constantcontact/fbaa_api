@@ -29,9 +29,6 @@ RSpec.describe FbaaApi::Client do
 
   describe '#put' do
     before do
-      allow_any_instance_of(Faraday::Connection).to receive(:send) {
-        double(Faraday::Response, status: 200, body: { it: 'worked' }.to_json)
-      }
     end
 
     it 'calls request with proper arguments' do
@@ -40,9 +37,11 @@ RSpec.describe FbaaApi::Client do
       client.put '/ads/123', ad_params
     end
 
-    it 'passes base_url to a new instance of Faraday' do
+    it 'passes base_url to a new instance of RestClient' do
       base_url = 'https://example.com/api/v1'
-      expect(Faraday).to receive(:new).with(url: base_url).and_call_original
+      expect_any_instance_of(RestClient::Request).to receive(:execute) {
+        double(RestClient::Response, status: 200, body: { it: 'worked' }.to_json)
+      }
       client.put '/ads/123', foo: 'bar'
     end
   end
