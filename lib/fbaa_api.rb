@@ -1,11 +1,10 @@
 require 'logger'
 require 'json'
-require 'ey-hmac/faraday'
+require 'rest_client'
+require 'api-auth'
 require 'fbaa_api/client'
 require "fbaa_api/version"
 require "fbaa_api/configuration"
-require 'faraday'
-require 'faraday_middleware'
 
 module FbaaApi
   class << self

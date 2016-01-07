@@ -35,27 +35,13 @@ module FbaaApi
 
     private
 
-    def fbaa_url
-      @fbaa_url ||= "#{config.base_url}/api/#{config.api_version}"
-    end
-
-    def connection
-      config.logger.info("Fbaa::Client - fbaa_url #{fbaa_url}")
-      Faraday.new(url: fbaa_url) do |c|
-        c.headers = { 'Accept' => 'application/json' }
-        c.use :hmac, config.access_id, config.secret_key
-        c.request :url_encoded
-        c.response :logger
-        c.adapter Faraday.default_adapter
-      end
-    end
-
     def request(method, path, params = {})
-      config.logger.info("Fbaa::Client - path #{path}")
-      response = connection.send(method, path) do |request|
-        request.body = params if [:post, :put].include? method
-        request.params = params
-      end
+      req = RestClient::Request.new(
+        url: "#{fbaa_url}#{path}",
+        headers: headers,
+        method: method
+      )
+      response = signed_request(req).execute
 
       config.logger.info("Fbaa::Client - status #{response.status}")
       config.logger.info("Fbaa::Client - body #{response.body}")
@@ -65,10 +51,21 @@ module FbaaApi
       { status: 500, body: { error_messages: "JSON::ParseError #{response.body}" } }
     end
 
+    def signed_request(request)
+      ApiAuth.sign!(request, config.access_id, config.secret_key)
+    end
+
+    def fbaa_url
+      @fbaa_url ||= "#{config.base_url}/api/#{config.api_version}"
+    end
+
+    def headers
+      { 'Content-Type' => "application/json" }
+    end
+
     def config
       FbaaApi.configuration
     end
-
   end
 end
 
