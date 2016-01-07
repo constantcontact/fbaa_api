@@ -36,8 +36,9 @@ module FbaaApi
     private
 
     def request(method, path, params = {})
+      url = "#{fbaa_url}/#{path}"
       req = RestClient::Request.new(
-        url: "#{fbaa_url}#{path}",
+        url: url,
         headers: headers,
         method: method
       )
@@ -47,6 +48,8 @@ module FbaaApi
       config.logger.info("Fbaa::Client - body #{response.body}")
 
       { status: response.status, body: JSON.parse(response.body) }
+    rescue RestClient::ResourceNotFound
+      { status: 404, body: { error_messages: "#{url} not found" } }
     rescue JSON::ParserError
       { status: 500, body: { error_messages: "JSON::ParseError #{response.body}" } }
     end
