@@ -3,9 +3,9 @@ require 'spec_helper'
 RSpec.describe FbaaApi::Client do
   let(:client) {
     FbaaApi.configure do |c|
-      c.base_url = 'https://example.com'
-      c.access_id = '13234'
-      c.secret_key = 'asdf1234'
+      c.base_url = test_base_url
+      c.access_id = test_access_id
+      c.secret_key = test_secret_key
     end
 
     FbaaApi::Client.new
@@ -28,8 +28,6 @@ RSpec.describe FbaaApi::Client do
   end
 
   describe '#put' do
-    before do
-    end
 
     it 'calls request with proper arguments' do
       ad_params = { ad: { name: 'edited' } }
@@ -38,9 +36,9 @@ RSpec.describe FbaaApi::Client do
     end
 
     it 'passes base_url to a new instance of RestClient' do
-      base_url = 'https://example.com/api/v1'
+      fbaa_url = 'https://fbaa.herokuapp.com'
       expect_any_instance_of(RestClient::Request).to receive(:execute) {
-        double(RestClient::Response, status: 200, body: { it: 'worked' }.to_json)
+        double(RestClient::Response, code: 200, body: { it: 'worked' }.to_json)
       }
       client.put '/ads/123', foo: 'bar'
     end
@@ -53,4 +51,23 @@ RSpec.describe FbaaApi::Client do
       client.delete '/ads', ad_params
     end
   end
+
+  describe '#validate_image', :vcr do
+    let(:prms) {{
+      image_url: 'http://www.rainforest-alliance.org/sites/default/files/uploads/4/capybara-family_15762686447_f9f8a0684a_o.jpg',
+      ctct_campaign_id: '12341234'
+    }}
+
+    it 'returns a 200 response code' do
+      res = client.validate_image(prms)
+      expect(res[:status]).to eq 200
+    end
+
+    it 'returns a text to image ratio' do
+      res = client.validate_image(prms)
+      expect(res[:body]['text_to_image_ratio']).to an_instance_of Float
+    end
+
+  end
+
 end

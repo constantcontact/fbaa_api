@@ -39,15 +39,15 @@ module FbaaApi
       url = "#{fbaa_url}/#{path}"
       req = RestClient::Request.new(
         url: url,
-        headers: headers,
+        headers: { params: params }.merge(headers),
         method: method
       )
       response = signed_request(req).execute
 
-      config.logger.info("Fbaa::Client - status #{response.status}")
+      config.logger.info("Fbaa::Client - status #{response.code}")
       config.logger.info("Fbaa::Client - body #{response.body}")
 
-      { status: response.status, body: JSON.parse(response.body) }
+      { status: response.code, body: JSON.parse(response.body) }
     rescue RestClient::ResourceNotFound
       { status: 404, body: { error_messages: "#{url} not found" } }
     rescue JSON::ParserError

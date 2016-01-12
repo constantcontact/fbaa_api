@@ -1,0 +1,60 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://fbaa.herokuapp.com/api/v1/image_validations?ctct_campaign_id=12341234&image_url=http://www.rainforest-alliance.org/sites/default/files/uploads/4/capybara-family_15762686447_f9f8a0684a_o.jpg
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 12 Jan 2016 03:00:17 GMT
+      Authorization:
+      - APIAuth <ACCESS_ID>:st9CCWHsx9aQiCSKsjFOX8p78vM=
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Cowboy
+      Date:
+      - Tue, 12 Jan 2016 03:00:18 GMT
+      Connection:
+      - keep-alive
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Content-Type:
+      - application/json; charset=utf-8
+      Etag:
+      - W/"b2226d4519d14a9a8452a409c40f4c78"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - fd6ab7e8-d37c-4a55-ad45-cdfac801e4d8
+      X-Runtime:
+      - '1.560002'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Transfer-Encoding:
+      - chunked
+      Via:
+      - 1.1 vegur
+    body:
+      encoding: UTF-8
+      string: '{"text_to_image_ratio":0.0,"threshold":0.1}'
+    http_version: 
+  recorded_at: Tue, 12 Jan 2016 03:00:19 GMT
+recorded_with: VCR 2.9.3
