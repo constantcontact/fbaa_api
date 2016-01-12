@@ -37,6 +37,7 @@ module FbaaApi
 
     def request(method, path, params = {})
       url = "#{fbaa_url}/#{path}"
+      config.logger.info("Fbaa::Client - #request url = #{url}")
       req = RestClient::Request.new(
         url: url,
         headers: { params: params }.merge(headers),
@@ -44,13 +45,15 @@ module FbaaApi
       )
       response = signed_request(req).execute
 
-      config.logger.info("Fbaa::Client - status #{response.code}")
+      config.logger.info("Fbaa::Client - response code #{response.code}")
       config.logger.info("Fbaa::Client - body #{response.body}")
 
       { status: response.code, body: JSON.parse(response.body) }
-    rescue JSON::ParserError
+    rescue JSON::ParserError => e
+      log_exception(e)
       { status: 500, body: { 'error_messages' => "JSON::ParseError #{response.body}" } }
     rescue => e
+      log_exception(e)
       if e.respond_to?(:response)
         response = e.response
         { status: response.code, body: JSON.parse(response.body) }
@@ -74,6 +77,13 @@ module FbaaApi
     def config
       FbaaApi.configuration
     end
+
+    def log_exception(e)
+      config.logger.error e.class.to_s
+      config.logger.error e.message
+      config.logger.error e.backtrace.join("\n")
+    end
+
   end
 end
 
