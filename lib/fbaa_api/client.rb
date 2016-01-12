@@ -48,6 +48,8 @@ module FbaaApi
       config.logger.info("Fbaa::Client - body #{response.body}")
 
       { status: response.code, body: JSON.parse(response.body) }
+    rescue RestClient::UnprocessableEntity, RestClient::Conflict
+      { status: response.code, body: JSON.parse(response.body) }
     rescue RestClient::ResourceNotFound
       { status: 404, body: { error_messages: "#{url} not found" } }
     rescue JSON::ParserError
