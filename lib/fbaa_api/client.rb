@@ -52,9 +52,13 @@ module FbaaApi
       { status: 404, body: { error_messages: "#{url} not found" } }
     rescue JSON::ParserError
       { status: 500, body: { error_messages: "JSON::ParseError #{response.body}" } }
-    rescue RestClient => e
-      response = e.response
-      { status: response.code, body: JSON.parse(response.body) }
+    rescue => e
+      if e.respond_to?(:response)
+        response = e.response
+        { status: response.code, body: JSON.parse(response.body) }
+      else
+        raise e
+      end
     end
 
     def signed_request(request)
