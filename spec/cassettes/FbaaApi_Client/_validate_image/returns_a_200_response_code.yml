@@ -14,9 +14,9 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 12 Jan 2016 03:00:17 GMT
+      - Wed, 13 Jan 2016 18:30:01 GMT
       Authorization:
-      - APIAuth <ACCESS_ID>:st9CCWHsx9aQiCSKsjFOX8p78vM=
+      - APIAuth <ACCESS_ID>:ZQL0GH6kwBoxEfEJy1Ne1pgZJ2w=
       User-Agent:
       - Ruby
   response:
@@ -27,7 +27,7 @@ http_interactions:
       Server:
       - Cowboy
       Date:
-      - Tue, 12 Jan 2016 03:00:18 GMT
+      - Wed, 13 Jan 2016 18:30:04 GMT
       Connection:
       - keep-alive
       X-Frame-Options:
@@ -43,9 +43,9 @@ http_interactions:
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - fd6ab7e8-d37c-4a55-ad45-cdfac801e4d8
+      - b39e46c8-a98f-4beb-8f23-db3a6cfd9fa1
       X-Runtime:
-      - '1.560002'
+      - '1.754385'
       Strict-Transport-Security:
       - max-age=31536000
       Transfer-Encoding:
@@ -56,5 +56,5 @@ http_interactions:
       encoding: UTF-8
       string: '{"text_to_image_ratio":0.0,"threshold":0.1}'
     http_version: 
-  recorded_at: Tue, 12 Jan 2016 03:00:19 GMT
+  recorded_at: Wed, 13 Jan 2016 18:30:05 GMT
 recorded_with: VCR 2.9.3

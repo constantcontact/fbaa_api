@@ -38,25 +38,28 @@ module FbaaApi
     def request(method, path, params = {})
       url = "#{fbaa_url}/#{path}"
       config.logger.info("Fbaa::Client - #request url = #{url}")
-      req = RestClient::Request.new(
+
+      opts = {
         url: url,
-        headers: { params: params }.merge(headers),
+        headers: headers(method, params),
         method: method
-      )
-      response = signed_request(req).execute
+      }
+      opts.merge!(payload: params.to_json) if method != :get
+
+      req = RestClient::Request.new(opts)
+      signed_req = signed_request(req)
+      response = signed_req.execute
 
       config.logger.info("Fbaa::Client - response code #{response.code}")
       config.logger.info("Fbaa::Client - body #{response.body}")
 
       { status: response.code, body: JSON.parse(response.body) }
-    rescue JSON::ParserError => e
-      log_exception(e)
-      { status: 500, body: { 'error_messages' => "JSON::ParseError #{response.body}" } }
     rescue => e
       log_exception(e)
       if e.respond_to?(:response)
         response = e.response
-        { status: response.code, body: JSON.parse(response.body) }
+        body = response.body.empty? ? {}.to_json : response.body
+        { status: response.code, body: JSON.parse(body) }
       else
         raise e
       end
@@ -70,8 +73,10 @@ module FbaaApi
       @fbaa_url ||= "#{config.base_url}/api/#{config.api_version}"
     end
 
-    def headers
-      { 'Content-Type' => "application/json" }
+    def headers(method, params)
+      _params = { 'Content-Type' => "application/json" }
+      _params.merge!(params: params) if method == :get
+      _params
     end
 
     def config
