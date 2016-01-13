@@ -6,6 +6,7 @@ RSpec.describe FbaaApi::Client do
       c.base_url = test_base_url
       c.access_id = test_access_id
       c.secret_key = test_secret_key
+      c.logger = Logger.new('/dev/null')
     end
 
     FbaaApi::Client.new
@@ -68,6 +69,31 @@ RSpec.describe FbaaApi::Client do
       expect(res[:body]['text_to_image_ratio']).to an_instance_of Float
     end
 
+  end
+
+  describe 'bad auth credentials' do
+    before do
+      FbaaApi.configure do |c|
+        c.base_url = test_base_url
+        c.access_id = '1234'
+        c.secret_key = test_secret_key
+      end
+    end
+
+    let(:prms) {{
+      image_url: 'http://whatever.com/notanimage.jpg',
+      ctct_campaign_id: '12341234'
+    }}
+
+    it 'returns http code 401' do
+      res = FbaaApi::Client.new.validate_image(prms)
+      expect(res[:status]).to eq 401
+    end
+
+    it 'returns unauthorized message' do
+      res = FbaaApi::Client.new.validate_image(prms)
+      expect(res[:body]['error_messages']).to eq 'Unauthorized'
+    end
   end
 
 end
