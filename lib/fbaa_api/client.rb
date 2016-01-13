@@ -1,6 +1,10 @@
 module FbaaApi
   class Client
 
+    def initialize
+      RestClient.log = config.logger
+    end
+
     def get(path, params = {})
       request(:get, path, params)
     end
@@ -48,21 +52,24 @@ module FbaaApi
 
       req = RestClient::Request.new(opts)
       signed_req = signed_request(req)
-      response = signed_req.execute
 
-      config.logger.info("Fbaa::Client - response code #{response.code}")
-      config.logger.info("Fbaa::Client - body #{response.body}")
+      signed_req.execute do |response, request, result, &block|
+        config.logger.info("Fbaa::Client - response code #{response.code}")
+        config.logger.info("Fbaa::Client - body #{response.body}")
 
-      { status: response.code, body: JSON.parse(response.body) }
+        case response.code
+        when /^2[0-9]{2}$/ # 200 category response
+          { status: response.code, body: JSON.parse(response.body) }
+        when 401
+          { status: 401, body: { 'error_messages' => 'Unauthorized' } }
+        else
+          body = response.body.empty? ? {}.to_json : response.body
+          { status: response.code, body: JSON.parse(body) }
+        end
+      end
     rescue => e
       log_exception(e)
-      if e.respond_to?(:response)
-        response = e.response
-        body = response.body.empty? ? {}.to_json : response.body
-        { status: response.code, body: JSON.parse(body) }
-      else
-        raise e
-      end
+      raise e
     end
 
     def signed_request(request)
